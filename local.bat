@@ -1,0 +1,1 @@
+mvn -Dangular.buildDIR="C:\Users\lindikha1\Liver\Code\EBS\eb-portal-employer-onboarding\dist" -Djboss.deployDIR="C:\Liver\servers\Jboss-eap-7\standalone\deployments" clean install package
