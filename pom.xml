@@ -14,6 +14,7 @@
   <properties>
     <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     <environment>1.6</environment>
+    <angular_build_dir>${angular.buildDIR}</angular_build_dir>
   </properties>
 
   <dependencies>
@@ -43,7 +44,8 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
           <webResources>
             <resource>
-              <directory>C:\Users\lindikha1\Liver\Code\EBS\eb-portal-employer-onboarding\dist</directory>
+              <!--<directory>C:\Users\lindikha1\Liver\Code\EBS\eb-portal-employer-onboarding\dist</directory>-->
+              <directory>${angular_build_dir}</directory>
               <includes>
                 <include>assets/**/*.*</include>
                 <include>assets/img/*.*</include>
