@@ -22,7 +22,7 @@
     <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     <environment>1.6</environment>
     <angular_build_dir>${angular.buildDIR}</angular_build_dir>
-    <jboss_deploy_dir>${jboss.deployDIR}</jboss_deploy_dir>
+    <!--<jboss_deploy_dir>${jboss.deployDIR}</jboss_deploy_dir>-->
   </properties>
 
   <dependencies>
@@ -66,7 +66,7 @@
               <directory>src/main/webapp</directory>
             </resource>
           </webResources>
-          <outputDirectory>${jboss_deploy_dir}</outputDirectory>
+          <!--<outputDirectory>${jboss_deploy_dir}</outputDirectory>-->
         </configuration>
       </plugin>
 
