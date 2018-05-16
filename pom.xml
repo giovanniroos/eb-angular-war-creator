@@ -11,6 +11,13 @@
   <name>EB Angular War Creator</name>
   <description>EB Create war from angular app</description>
 
+  <scm>
+    <connection>scm:git:http://bitbucket.discsrv.co.za/scm/debs/eb-angular-war-creator.git</connection>
+    <developerConnection>scm:git:http://bitbucket.discsrv.co.za/scm/debs/eb-angular-war-creator.git
+    </developerConnection>
+    <url>http://bitbucket.discsrv.co.za/projects/DEBS/repos/eb-angular-war-creator/</url>
+  </scm>
+
   <properties>
     <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     <environment>1.6</environment>
