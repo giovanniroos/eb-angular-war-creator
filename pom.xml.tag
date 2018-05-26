@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>za.co.discovery.eb.web</groupId>
-  <artifactId>${artifact.name}</artifactId>
+  <artifactId>eb-angular-war-creator</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
 
@@ -16,13 +15,14 @@
     <developerConnection>scm:git:http://bitbucket.discsrv.co.za/scm/debs/eb-angular-war-creator.git
     </developerConnection>
     <url>http://bitbucket.discsrv.co.za/projects/DEBS/repos/eb-angular-war-creator/</url>
+    <tag>v1.0</tag>
   </scm>
 
   <properties>
     <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     <environment>1.6</environment>
     <angular_build_dir>${angular.buildDIR}</angular_build_dir>
-    <!--<jboss_deploy_dir>${jboss.deployDIR}</jboss_deploy_dir>-->
+    <jboss_deploy_dir>${jboss.deployDIR}</jboss_deploy_dir>
   </properties>
 
   <dependencies>
@@ -35,7 +35,7 @@
   </dependencies>
 
   <build>
-    <!--<finalName>eb-web-employer-zone</finalName>-->
+    <finalName>eb-web-employer-zone</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -66,22 +66,19 @@
               <directory>src/main/webapp</directory>
             </resource>
           </webResources>
-          <!--<outputDirectory>${jboss_deploy_dir}</outputDirectory>-->
+          <outputDirectory>${jboss_deploy_dir}</outputDirectory>
         </configuration>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>deploy</goal>
-            </goals>
-          </execution>
-        </executions>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <releaseProfiles>releases</releaseProfiles>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -108,14 +105,14 @@
 
   <distributionManagement>
     <repository>
-      <id>nexus</id>
-      <name>Group Risk Internal Releases</name>
-      <url>http://dlpbuild01:8081/nexus/content/repositories/releases</url>
+      <id>Releases</id>
+      <name>Internal Release Repository</name>
+      <url>http://dlpbuild01:8081/nexus/content/repositories/releases/</url>
     </repository>
     <snapshotRepository>
-      <id>nexus</id>
-      <name>Group Risk Internal Snapshots</name>
-      <url>http://dlpbuild01:8081/nexus/content/repositories/snapshots</url>
+      <id>Snapshots</id>
+      <name>Internal Snapshot Repository</name>
+      <url>http://dlpbuild01:8081/nexus/content/repositories/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 </project>
