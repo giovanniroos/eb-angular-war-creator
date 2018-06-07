@@ -20,8 +20,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApplicationFilter implements Filter {
+  private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationFilter.class);
+
   public void init(FilterConfig arg0) throws ServletException {
 
   }
@@ -46,7 +50,7 @@ public class ApplicationFilter implements Filter {
       Cookie[] cookies = request.getCookies();
 
       for (Cookie ck : cookies) {
-        System.out.println(ck.getDomain()+" "+ck.getName()+" "+ck.getSecure()+" "+ck.getPath()+" "+ck.getValue());
+        LOGGER.info(ck.getDomain()+" "+ck.getName()+" "+ck.getSecure()+" "+ck.getPath()+" "+ck.getValue());
       }
     }catch(Exception ex){
       ex.printStackTrace();
