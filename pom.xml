@@ -5,7 +5,7 @@
 
   <groupId>za.co.discovery.eb.web</groupId>
   <artifactId>${artifact.name}</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <packaging>war</packaging>
 
   <name>EB Angular War Creator</name>
@@ -108,12 +108,12 @@
 
   <distributionManagement>
     <repository>
-      <id>nexus</id>
+      <id>Releases</id>
       <name>Group Risk Internal Releases</name>
       <url>http://dlpbuild01:8081/nexus/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
-      <id>nexus</id>
+      <id>Snapshots</id>
       <name>Group Risk Internal Snapshots</name>
       <url>http://dlpbuild01:8081/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
