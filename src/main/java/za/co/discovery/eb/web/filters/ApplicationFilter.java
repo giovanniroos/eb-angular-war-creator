@@ -20,6 +20,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,7 @@ public class ApplicationFilter implements Filter {
 
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
-    showCookies(req);
+    showCookies(req, resp);
     String path = ((HttpServletRequest) req).getRequestURI();
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
@@ -44,15 +46,19 @@ public class ApplicationFilter implements Filter {
     }
   }
 
-  private void showCookies(ServletRequest req) {
-    try{
+  private void showCookies(ServletRequest req, ServletResponse resp) {
+    try {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
 
       for (Cookie ck : cookies) {
-        LOGGER.info(ck.getDomain()+" "+ck.getName()+" "+ck.getSecure()+" "+ck.getPath()+" "+ck.getValue());
+        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
+          Cookie myCookie = new Cookie(ck.getName(), ck.getValue());
+          ((HttpServletResponse) resp).addCookie(myCookie);
+        }
+        LOGGER.info(ck.getDomain() + " " + ck.getName() + " " + ck.getSecure() + " " + ck.getPath() + " " + ck.getValue());
       }
-    }catch(Exception ex){
+    } catch (Exception ex) {
       ex.printStackTrace();
     }
   }
