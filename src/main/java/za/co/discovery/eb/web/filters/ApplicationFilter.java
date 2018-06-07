@@ -51,16 +51,33 @@ public class ApplicationFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
 
-      for (Cookie ck : cookies) {
-        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
-          Cookie myCookie = new Cookie(ck.getName(), ck.getValue());
-          ((HttpServletResponse) resp).addCookie(myCookie);
+      if (!containsEBCookie(cookies)) {
+        for (Cookie ck : cookies) {
+          if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
+            Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
+            ((HttpServletResponse) resp).addCookie(myCookie);
+          }
+          LOGGER.info(ck.getDomain() + " " + ck.getName() + " " + ck.getSecure() + " " + ck.getPath() + " " + ck.getValue());
         }
-        LOGGER.info(ck.getDomain() + " " + ck.getName() + " " + ck.getSecure() + " " + ck.getPath() + " " + ck.getValue());
       }
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+  private boolean containsEBCookie(Cookie[] cookies) {
+    try {
+      for (Cookie ck : cookies) {
+        if (ck.getName().equalsIgnoreCase("EBSESSIONID") && ck.getValue() != null) {
+          return true;
+        }
+      }
+
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+
+    return false;
   }
 
   public void destroy() {
