@@ -57,7 +57,7 @@ public class ApplicationFilter implements Filter {
             Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
             ((HttpServletResponse) resp).addCookie(myCookie);
           }
-          LOGGER.info(ck.getDomain() + " " + ck.getName() + " " + ck.getSecure() + " " + ck.getPath() + " " + ck.getValue());
+//          LOGGER.info(ck.getDomain() + " " + ck.getName() + " " + ck.getSecure() + " " + ck.getPath() + " " + ck.getValue());
         }
       }
     } catch (Exception ex) {
