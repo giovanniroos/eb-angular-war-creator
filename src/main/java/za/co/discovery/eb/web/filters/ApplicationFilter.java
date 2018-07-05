@@ -55,6 +55,7 @@ public class ApplicationFilter implements Filter {
       for (Cookie ck : cookies) {
         if (ck.getName().equalsIgnoreCase("EBSESSIONID")) {
           ck.setMaxAge(0);
+          ck.setValue("");
         }
       }
 
@@ -79,21 +80,6 @@ public class ApplicationFilter implements Filter {
     } catch (Exception ex) {
       ex.printStackTrace();
     }
-  }
-
-  private boolean containsEBCookie(Cookie[] cookies) {
-    try {
-      for (Cookie ck : cookies) {
-        if (ck.getName().equalsIgnoreCase("EBSESSIONID") && ck.getValue() != null) {
-          return true;
-        }
-      }
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-
-    return false;
   }
 
   public void destroy() {
