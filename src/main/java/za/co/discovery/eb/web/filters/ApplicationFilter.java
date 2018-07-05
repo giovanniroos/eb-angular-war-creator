@@ -72,7 +72,7 @@ public class ApplicationFilter implements Filter {
 //      if (!containsEBCookie(cookies)) {
       for (Cookie ck : cookies) {
         if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
-          Cookie ebSessionCookie = findCookie(cookies, ck.getName());
+          Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
           if (ebSessionCookie != null) {
             ebSessionCookie.setValue(ck.getValue());
           }
