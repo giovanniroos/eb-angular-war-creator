@@ -92,6 +92,7 @@ public class ApplicationFilter implements Filter {
       if (ebSessionCookie != null) {
         Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
         ebSessionCookie.setValue(original.getValue());
+        ((HttpServletResponse) resp).addCookie(ebSessionCookie);
       }
       else {
         Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
