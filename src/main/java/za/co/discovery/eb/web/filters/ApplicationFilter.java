@@ -69,25 +69,36 @@ public class ApplicationFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
 
-      for (Cookie ck : cookies) {
-        System.out.println(String.format("%s = %s", ck.getName(), ck.getValue()));
-        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
-          Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
-
-          if (ebSessionCookie != null) {
-            System.out.println(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(), ebSessionCookie.getValue()));
-            System.out.println("Setting value of existing");
-            ebSessionCookie.setValue(ck.getValue());
-            System.out.println("Value set to: " + ebSessionCookie.getValue());
-          }
-          else {
-            System.out.println("Add a new cookie");
-            Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
-            ((HttpServletResponse) resp).addCookie(myCookie);
-          }
-          break;
-        }
+//      for (Cookie ck : cookies) {
+//        System.out.println(String.format("%s = %s", ck.getName(), ck.getValue()));
+//        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
+//          Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
+//
+//          if (ebSessionCookie != null) {
+//            System.out.println(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(), ebSessionCookie.getValue()));
+//            System.out.println("Setting value of existing");
+//            ebSessionCookie.setValue(ck.getValue());
+//            System.out.println("Value set to: " + ebSessionCookie.getValue());
+//          }
+//          else {
+//            System.out.println("Add a new cookie");
+//            Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
+//            ((HttpServletResponse) resp).addCookie(myCookie);
+//          }
+//          break;
+//        }
+//      }
+      Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
+      if (ebSessionCookie != null) {
+        Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
+        ebSessionCookie.setValue(original.getValue());
       }
+      else {
+        Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
+        Cookie myCookie = new Cookie("EBSESSIONID", original.getValue());
+        ((HttpServletResponse) resp).addCookie(myCookie);
+      }
+
     } catch (Exception ex) {
       ex.printStackTrace();
     }
