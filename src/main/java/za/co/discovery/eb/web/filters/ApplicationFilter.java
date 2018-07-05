@@ -34,7 +34,7 @@ public class ApplicationFilter implements Filter {
 
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
-    deleteEBSessionCookies(req, resp);
+//    deleteEBSessionCookies(req, resp);
     showCookies(req, resp);
     String path = ((HttpServletRequest) req).getRequestURI();
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
@@ -47,22 +47,22 @@ public class ApplicationFilter implements Filter {
     }
   }
 
-  private void deleteEBSessionCookies(ServletRequest req, ServletResponse resp) {
-    try {
-      HttpServletRequest request = (HttpServletRequest) req;
-      Cookie[] cookies = request.getCookies();
-
-      for (Cookie ck : cookies) {
-        if (ck.getName().equalsIgnoreCase("EBSESSIONID")) {
-          ck.setMaxAge(0);
-          ck.setValue("");
-        }
-      }
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
+//  private void deleteEBSessionCookies(ServletRequest req, ServletResponse resp) {
+//    try {
+//      HttpServletRequest request = (HttpServletRequest) req;
+//      Cookie[] cookies = request.getCookies();
+//
+//      for (Cookie ck : cookies) {
+//        if (ck.getName().equalsIgnoreCase("EBSESSIONID")) {
+//          ck.setMaxAge(0);
+//          ck.setValue("");
+//        }
+//      }
+//
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//    }
+//  }
 
   private void showCookies(ServletRequest req, ServletResponse resp) {
     try {
@@ -72,8 +72,14 @@ public class ApplicationFilter implements Filter {
 //      if (!containsEBCookie(cookies)) {
       for (Cookie ck : cookies) {
         if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
-          Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
-          ((HttpServletResponse) resp).addCookie(myCookie);
+          Cookie ebSessionCookie = findCookie(cookies, ck.getName());
+          if (ebSessionCookie != null) {
+            ebSessionCookie.setValue(ck.getValue());
+          }
+          else {
+            Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
+            ((HttpServletResponse) resp).addCookie(myCookie);
+          }
           break;
         }
       }
@@ -81,6 +87,15 @@ public class ApplicationFilter implements Filter {
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+  private Cookie findCookie(Cookie[] cookies, String cookieName) {
+    for (Cookie ck : cookies) {
+      if (ck.getName().equalsIgnoreCase(cookieName)) {
+        return ck;
+      }
+    }
+    return null;
   }
 
   public void destroy() {
