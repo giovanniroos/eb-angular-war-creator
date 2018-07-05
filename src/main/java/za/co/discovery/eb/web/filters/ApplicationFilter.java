@@ -34,6 +34,7 @@ public class ApplicationFilter implements Filter {
 
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
+    deleteEBSessionCookies(req, resp);
     showCookies(req, resp);
     String path = ((HttpServletRequest) req).getRequestURI();
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
@@ -46,20 +47,35 @@ public class ApplicationFilter implements Filter {
     }
   }
 
+  private void deleteEBSessionCookies(ServletRequest req, ServletResponse resp) {
+    try {
+      HttpServletRequest request = (HttpServletRequest) req;
+      Cookie[] cookies = request.getCookies();
+
+      for (Cookie ck : cookies) {
+        if (ck.getName().equalsIgnoreCase("EBSESSIONID")) {
+          ck.setMaxAge(0);
+        }
+      }
+
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
   private void showCookies(ServletRequest req, ServletResponse resp) {
     try {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
 
-      if (!containsEBCookie(cookies)) {
-        for (Cookie ck : cookies) {
-          if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
-            Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
-            ((HttpServletResponse) resp).addCookie(myCookie);
-          }
-//          LOGGER.info(ck.getDomain() + " " + ck.getName() + " " + ck.getSecure() + " " + ck.getPath() + " " + ck.getValue());
+//      if (!containsEBCookie(cookies)) {
+      for (Cookie ck : cookies) {
+        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
+          Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
+          ((HttpServletResponse) resp).addCookie(myCookie);
         }
       }
+//      }
     } catch (Exception ex) {
       ex.printStackTrace();
     }
