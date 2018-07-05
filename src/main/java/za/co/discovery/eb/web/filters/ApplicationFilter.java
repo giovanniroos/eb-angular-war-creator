@@ -72,14 +72,14 @@ public class ApplicationFilter implements Filter {
       for (Cookie ck : cookies) {
         if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
           Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
-          LOGGER.info(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(),
+          System.out.println(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(),
               ebSessionCookie.getValue()));
           if (ebSessionCookie != null) {
-            LOGGER.info("Setting value of existing");
+            System.out.println("Setting value of existing");
             ebSessionCookie.setValue(ck.getValue());
           }
           else {
-            LOGGER.info("Add a new cookie");
+            System.out.println("Add a new cookie");
             Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
             ((HttpServletResponse) resp).addCookie(myCookie);
           }
