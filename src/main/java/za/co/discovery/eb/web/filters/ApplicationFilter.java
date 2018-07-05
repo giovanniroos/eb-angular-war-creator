@@ -69,21 +69,23 @@ public class ApplicationFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
 
-//      if (!containsEBCookie(cookies)) {
       for (Cookie ck : cookies) {
-        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID") || ck.getName().equalsIgnoreCase("MASTERPORTALWLJSESSIONID")) {
+        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
           Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
+          LOGGER.info(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(),
+              ebSessionCookie.getValue()));
           if (ebSessionCookie != null) {
+            LOGGER.info("Setting value of existing");
             ebSessionCookie.setValue(ck.getValue());
           }
           else {
+            LOGGER.info("Add a new cookie");
             Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
             ((HttpServletResponse) resp).addCookie(myCookie);
           }
           break;
         }
       }
-//      }
     } catch (Exception ex) {
       ex.printStackTrace();
     }
