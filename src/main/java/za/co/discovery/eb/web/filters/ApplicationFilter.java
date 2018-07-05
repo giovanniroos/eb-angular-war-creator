@@ -74,6 +74,7 @@ public class ApplicationFilter implements Filter {
         if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
           Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
           ((HttpServletResponse) resp).addCookie(myCookie);
+          break;
         }
       }
 //      }
