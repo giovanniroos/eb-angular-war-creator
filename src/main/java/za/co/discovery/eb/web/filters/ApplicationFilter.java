@@ -70,15 +70,15 @@ public class ApplicationFilter implements Filter {
       Cookie[] cookies = request.getCookies();
 
       for (Cookie ck : cookies) {
-        System.out.println(String.format("%s = %s",ck.getName(), ck.getValue()));
+        System.out.println(String.format("%s = %s", ck.getName(), ck.getValue()));
         if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
           Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
-          System.out.println(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(),
-              ebSessionCookie.getValue()));
+
           if (ebSessionCookie != null) {
+            System.out.println(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(), ebSessionCookie.getValue()));
             System.out.println("Setting value of existing");
             ebSessionCookie.setValue(ck.getValue());
-            System.out.println("Value set to: "+ebSessionCookie.getValue());
+            System.out.println("Value set to: " + ebSessionCookie.getValue());
           }
           else {
             System.out.println("Add a new cookie");
