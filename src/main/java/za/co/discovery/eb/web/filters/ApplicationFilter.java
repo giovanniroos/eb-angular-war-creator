@@ -70,6 +70,7 @@ public class ApplicationFilter implements Filter {
       Cookie[] cookies = request.getCookies();
 
       for (Cookie ck : cookies) {
+        System.out.println(String.format("%s = %s",ck.getName(), ck.getValue()));
         if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
           Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
           System.out.println(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(),
