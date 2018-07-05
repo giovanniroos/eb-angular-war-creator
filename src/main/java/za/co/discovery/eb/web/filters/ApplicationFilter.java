@@ -78,6 +78,7 @@ public class ApplicationFilter implements Filter {
           if (ebSessionCookie != null) {
             System.out.println("Setting value of existing");
             ebSessionCookie.setValue(ck.getValue());
+            System.out.println("Value set to: "+ebSessionCookie.getValue());
           }
           else {
             System.out.println("Add a new cookie");
