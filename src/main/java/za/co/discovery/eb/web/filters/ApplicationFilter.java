@@ -94,7 +94,9 @@ public class ApplicationFilter implements Filter {
         for (Cookie old : cookies) {
           if (old.getName().equalsIgnoreCase("EBSESSIONID")) {
             old.setMaxAge(0);
+            old.setPath("/");
             old.setValue("");
+            ((HttpServletResponse) resp).addCookie(old);
           }
         }
         addNew(resp, original.getValue());
