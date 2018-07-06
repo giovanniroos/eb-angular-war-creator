@@ -34,7 +34,6 @@ public class ApplicationFilter implements Filter {
 
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
-//    deleteEBSessionCookies(req, resp);
     showCookies(req, resp);
     String path = ((HttpServletRequest) req).getRequestURI();
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
@@ -47,47 +46,10 @@ public class ApplicationFilter implements Filter {
     }
   }
 
-//  private void deleteEBSessionCookies(ServletRequest req, ServletResponse resp) {
-//    try {
-//      HttpServletRequest request = (HttpServletRequest) req;
-//      Cookie[] cookies = request.getCookies();
-//
-//      for (Cookie ck : cookies) {
-//        if (ck.getName().equalsIgnoreCase("EBSESSIONID")) {
-//          ck.setMaxAge(0);
-//          ck.setValue("");
-//        }
-//      }
-//
-//    } catch (Exception ex) {
-//      ex.printStackTrace();
-//    }
-//  }
-
   private void showCookies(ServletRequest req, ServletResponse resp) {
     try {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
-
-//      for (Cookie ck : cookies) {
-//        System.out.println(String.format("%s = %s", ck.getName(), ck.getValue()));
-//        if (ck.getName().equalsIgnoreCase("PORTALWLJSESSIONID")) {
-//          Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
-//
-//          if (ebSessionCookie != null) {
-//            System.out.println(String.format("%s = %s, %s = %s ", ck.getName(), ck.getValue(), ebSessionCookie.getName(), ebSessionCookie.getValue()));
-//            System.out.println("Setting value of existing");
-//            ebSessionCookie.setValue(ck.getValue());
-//            System.out.println("Value set to: " + ebSessionCookie.getValue());
-//          }
-//          else {
-//            System.out.println("Add a new cookie");
-//            Cookie myCookie = new Cookie("EBSESSIONID", ck.getValue());
-//            ((HttpServletResponse) resp).addCookie(myCookie);
-//          }
-//          break;
-//        }
-//      }
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
       if (ebSessionCookie != null) {
