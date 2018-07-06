@@ -34,13 +34,13 @@ public class ApplicationFilter implements Filter {
 
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
-    showCookies(req, resp);
     String path = ((HttpServletRequest) req).getRequestURI();
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
       chain.doFilter(req, resp);
     }
     else {
+      showCookies(req, resp);
       RequestDispatcher rd = req.getRequestDispatcher("/index.html");
       rd.forward(req, resp);
     }
