@@ -53,7 +53,6 @@ public class ApplicationFilter implements Filter {
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
       if (ebSessionCookie != null) {
-        ((HttpServletRequest) req).getSession().invalidate();
         for (Cookie old : cookies) {
           if (old.getName().equalsIgnoreCase("EBSESSIONID")) {
             old.setMaxAge(0);
