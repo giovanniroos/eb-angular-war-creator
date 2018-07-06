@@ -88,26 +88,29 @@ public class ApplicationFilter implements Filter {
 //          break;
 //        }
 //      }
+      Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
       if (ebSessionCookie != null) {
-        Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
-
         for (Cookie old : cookies) {
           if (old.getName().equalsIgnoreCase("EBSESSIONID")) {
-            old.setValue(original.getValue());
-            ((HttpServletResponse) resp).addCookie(old);
+            old.setMaxAge(0);
+            old.setValue("");
           }
         }
+        addNew(resp, original.getValue());
       }
       else {
-        Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
-        Cookie myCookie = new Cookie("EBSESSIONID", original.getValue());
-        ((HttpServletResponse) resp).addCookie(myCookie);
+        addNew(resp, original.getValue());
       }
 
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+  private void addNew(ServletResponse resp, String value) {
+    Cookie myCookie = new Cookie("EBSESSIONID", value);
+    ((HttpServletResponse) resp).addCookie(myCookie);
   }
 
   private Cookie findCookie(Cookie[] cookies, String cookieName) {
