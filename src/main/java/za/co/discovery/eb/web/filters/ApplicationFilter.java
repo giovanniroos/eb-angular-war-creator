@@ -47,6 +47,7 @@ public class ApplicationFilter implements Filter {
       RequestDispatcher rd = req.getRequestDispatcher("/index.html");
       rd.forward(req, resp);
     }
+    removeDuplicates(req, resp);
   }
 
   private void showCookies(ServletRequest req, ServletResponse resp) {
@@ -75,6 +76,10 @@ public class ApplicationFilter implements Filter {
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+  private void removeDuplicates(ServletRequest req, ServletResponse resp) {
+    this.showCookies(req, resp);
   }
 
   private void addNew(ServletResponse resp, String value) {
