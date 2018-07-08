@@ -53,6 +53,8 @@ public class ApplicationFilter implements Filter {
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
       if (ebSessionCookie != null) {
+        LOGGER.info(String.format("Refresh: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue
+            ()));
         for (Cookie old : cookies) {
           if (old.getName().equalsIgnoreCase("EBSESSIONID")) {
             old.setMaxAge(0);
@@ -64,9 +66,10 @@ public class ApplicationFilter implements Filter {
         addNew(resp, original.getValue());
       }
       else {
+        LOGGER.info(String.format("Add new: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue
+            ()));
         addNew(resp, original.getValue());
       }
-
     } catch (Exception ex) {
       ex.printStackTrace();
     }
