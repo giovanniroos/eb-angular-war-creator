@@ -43,10 +43,10 @@ public class ApplicationFilter implements Filter {
     }
     else {
       LOGGER.info("Go to index.html ");
-      showCookies(req, resp);
       RequestDispatcher rd = req.getRequestDispatcher("/index.html");
       rd.forward(req, resp);
     }
+    showCookies(req, resp);
   }
 
   private void showCookies(ServletRequest req, ServletResponse resp) {
