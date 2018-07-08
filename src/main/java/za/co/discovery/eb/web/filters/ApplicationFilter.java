@@ -35,6 +35,7 @@ public class ApplicationFilter implements Filter {
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
+    LOGGER.info(String.format("URI Path: %s",path));
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
       chain.doFilter(req, resp);
