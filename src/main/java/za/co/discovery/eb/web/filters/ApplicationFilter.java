@@ -36,6 +36,7 @@ public class ApplicationFilter implements Filter {
                        FilterChain chain) throws IOException, ServletException {
     LOGGER.info("Do filter ");
     String path = ((HttpServletRequest) req).getRequestURI();
+    showCookies(req, resp);
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
       LOGGER.info("Chain " + path);
@@ -46,7 +47,6 @@ public class ApplicationFilter implements Filter {
       RequestDispatcher rd = req.getRequestDispatcher("/index.html");
       rd.forward(req, resp);
     }
-    showCookies(req, resp);
   }
 
   private void showCookies(ServletRequest req, ServletResponse resp) {
