@@ -69,8 +69,7 @@ public class ApplicationFilter implements Filter {
         addNew(resp, original.getValue());
       }
       else {
-        LOGGER.info(String.format("Add new: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue
-            ()));
+        LOGGER.info(String.format("Add new: original {%s} ", original.getValue()));
         addNew(resp, original.getValue());
       }
     } catch (Exception ex) {
