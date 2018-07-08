@@ -34,12 +34,15 @@ public class ApplicationFilter implements Filter {
 
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
+    LOGGER.info("Do filter ");
     String path = ((HttpServletRequest) req).getRequestURI();
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
+      LOGGER.info("Chain");
       chain.doFilter(req, resp);
     }
     else {
+      LOGGER.info("Go to index.html ");
       showCookies(req, resp);
       RequestDispatcher rd = req.getRequestDispatcher("/index.html");
       rd.forward(req, resp);
