@@ -38,7 +38,7 @@ public class ApplicationFilter implements Filter {
     String path = ((HttpServletRequest) req).getRequestURI();
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
-      LOGGER.info("Chain");
+      LOGGER.info("Chain " + path);
       chain.doFilter(req, resp);
     }
     else {
