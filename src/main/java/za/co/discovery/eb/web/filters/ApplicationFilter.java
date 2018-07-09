@@ -83,6 +83,7 @@ public class ApplicationFilter implements Filter {
 
   private void addNew(ServletResponse resp, String value) {
     Cookie myCookie = new Cookie("EBSESSIONID", value);
+    myCookie.setPath("/eb-web-employer-zone/employer-onboarding");
     ((HttpServletResponse) resp).addCookie(myCookie);
   }
 
