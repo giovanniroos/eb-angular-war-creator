@@ -35,9 +35,12 @@ public class ApplicationFilter implements Filter {
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
-    LOGGER.info(String.format("URI Path: %s",path));
+    LOGGER.info(String.format("URI Path: %s", path));
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
+      if (path.contains("bootstrap.min.css.map")) {
+        showCookies(req, resp);
+      }
       chain.doFilter(req, resp);
     }
     else {
@@ -56,7 +59,7 @@ public class ApplicationFilter implements Filter {
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
 
-      LOGGER.info("MAX AGE: "+Integer.toString(original.getMaxAge()));
+      LOGGER.info("MAX AGE: " + Integer.toString(original.getMaxAge()));
       if (ebSessionCookie != null) {
         LOGGER.info(String.format("Refresh: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue()));
         for (Cookie old : cookies) {
