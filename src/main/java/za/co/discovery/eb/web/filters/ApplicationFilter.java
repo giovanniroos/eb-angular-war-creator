@@ -55,6 +55,8 @@ public class ApplicationFilter implements Filter {
       Cookie[] cookies = request.getCookies();
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
+
+      LOGGER.info("MAX AGE: "+Integer.toString(original.getMaxAge()));
       if (ebSessionCookie != null) {
         LOGGER.info(String.format("Refresh: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue()));
         for (Cookie old : cookies) {
