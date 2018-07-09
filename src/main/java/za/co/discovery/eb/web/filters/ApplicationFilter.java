@@ -36,19 +36,15 @@ public class ApplicationFilter implements Filter {
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
     LOGGER.info(String.format("URI Path: %s", path));
+    showCookies(req, resp);
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
-      if (path.contains("bootstrap.min.css.map")) {
-        showCookies(req, resp);
-      }
       chain.doFilter(req, resp);
     }
     else {
       LOGGER.info(String.format("Redirect to index.html"));
-      showCookies(req, resp);
       RequestDispatcher rd = req.getRequestDispatcher("/index.html");
       rd.forward(req, resp);
-      showCookies(req, resp);
     }
   }
 
