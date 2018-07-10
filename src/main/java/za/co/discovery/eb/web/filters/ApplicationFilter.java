@@ -36,7 +36,7 @@ public class ApplicationFilter implements Filter {
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
     LOGGER.info(String.format("URI Path: %s", path));
-    showCookies(req, resp);
+    showCookies(req, resp,path);
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
       chain.doFilter(req, resp);
@@ -48,7 +48,7 @@ public class ApplicationFilter implements Filter {
     }
   }
 
-  private void showCookies(ServletRequest req, ServletResponse resp) {
+  private void showCookies(ServletRequest req, ServletResponse resp, String path) {
     try {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
@@ -66,20 +66,24 @@ public class ApplicationFilter implements Filter {
             ((HttpServletResponse) resp).addCookie(old);
           }
         }
-        addNew(resp, original.getValue());
+        addNew(resp, original.getValue(), path);
       }
       else {
         LOGGER.info(String.format("Add new: original {%s} ", original.getValue()));
-        addNew(resp, original.getValue());
+        addNew(resp, original.getValue(), path);
       }
     } catch (Exception ex) {
       ex.printStackTrace();
     }
   }
 
-  private void addNew(ServletResponse resp, String value) {
+  private void addNew(ServletResponse resp, String value, String path) {
     Cookie myCookie = new Cookie("EBSESSIONID", value);
-    myCookie.setPath("/eb-web-employer-zone/employer-onboarding");
+    if(path.contains("eb-web-broker-zone")){
+      myCookie.setPath("/eb-web-broker-zone");
+    }else {
+      myCookie.setPath("/eb-web-employer-zone/employer-onboarding");
+    }
     ((HttpServletResponse) resp).addCookie(myCookie);
   }
 
