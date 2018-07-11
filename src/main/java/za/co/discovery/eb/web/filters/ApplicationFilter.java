@@ -36,7 +36,7 @@ public class ApplicationFilter implements Filter {
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
     LOGGER.info(String.format("URI Path: %s", path));
-    showCookies(req, resp,path);
+    showCookies(req, resp, path);
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
       chain.doFilter(req, resp);
@@ -55,7 +55,7 @@ public class ApplicationFilter implements Filter {
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
 
-      LOGGER.info("MAX AGE: " + Integer.toString(original.getMaxAge()));
+      LOGGER.info("MAX AGE: " + Integer.toString((original != null) ? original.getMaxAge() : 0));
       if (ebSessionCookie != null) {
         LOGGER.info(String.format("Refresh: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue()));
         for (Cookie old : cookies) {
@@ -79,9 +79,10 @@ public class ApplicationFilter implements Filter {
 
   private void addNew(ServletResponse resp, String value, String path) {
     Cookie myCookie = new Cookie("EBSESSIONID", value);
-    if(path.contains("eb-web-broker-zone")){
+    if (path.contains("eb-web-broker-zone")) {
       myCookie.setPath("/eb-web-broker-zone");
-    }else {
+    }
+    else {
       myCookie.setPath("/eb-web-employer-zone/employer-onboarding");
     }
     ((HttpServletResponse) resp).addCookie(myCookie);
