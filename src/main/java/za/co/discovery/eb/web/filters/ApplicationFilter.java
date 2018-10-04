@@ -35,14 +35,12 @@ public class ApplicationFilter implements Filter {
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
-    LOGGER.info(String.format("URI Path: %s", path));
     showCookies(req, resp, path);
     if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
         .contains(".svg")) {
       chain.doFilter(req, resp);
     }
     else {
-      LOGGER.info(String.format("Redirect to index.html"));
       RequestDispatcher rd = req.getRequestDispatcher("/index.html");
       rd.forward(req, resp);
     }
@@ -55,9 +53,7 @@ public class ApplicationFilter implements Filter {
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
 
-      LOGGER.info("MAX AGE: " + Integer.toString((original != null) ? original.getMaxAge() : 0));
       if (ebSessionCookie != null) {
-        LOGGER.info(String.format("Refresh: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue()));
         for (Cookie old : cookies) {
           if (old.getName().equalsIgnoreCase("EBSESSIONID")) {
             old.setMaxAge(0);
@@ -69,7 +65,6 @@ public class ApplicationFilter implements Filter {
         addNew(resp, original.getValue(), path);
       }
       else {
-        LOGGER.info(String.format("Add new: original {%s} ", original.getValue()));
         addNew(resp, original.getValue(), path);
       }
     } catch (Exception ex) {
