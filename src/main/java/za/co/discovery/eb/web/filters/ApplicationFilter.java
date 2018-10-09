@@ -42,7 +42,7 @@ public class ApplicationFilter implements Filter {
     boolean sessionValid = sessionValidityChecker.isSessionValid(sessionId);
 
     if(!sessionValid){
-      RequestDispatcher rd = req.getRequestDispatcher("https://newtestwww.discsrv.co.za/portal/");
+      RequestDispatcher rd = req.getRequestDispatcher("https://newtestwww.discsrv.co.za/portal/individual/login");
       rd.forward(req, resp);
     }else {
       if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
