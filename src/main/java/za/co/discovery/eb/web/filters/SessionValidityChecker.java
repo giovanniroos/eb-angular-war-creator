@@ -10,6 +10,8 @@ package za.co.discovery.eb.web.filters;
  *
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import za.co.discovery.eb.domain.aps.SAProfileResponse;
@@ -17,6 +19,7 @@ import za.co.discovery.eb.domain.aps.SAProfileResponse;
 public class SessionValidityChecker {
 
   RestTemplate restTemplate = new RestTemplate();
+  private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationFilter.class);
 
   public boolean isSessionValid(String sessionId){
     try{
@@ -24,12 +27,13 @@ public class SessionValidityChecker {
           ("https://employeebenefitsqa/eb-sl-aps/v1/sa-profile?sessionID="+sessionId, SAProfileResponse.class);
 
       if(!saProfileResponse.getBody().getSharedSession().getSharedSessionItem().isEmpty()){
+        LOGGER.info("{}","Session is valid");
         return true;
       }
     }catch(Exception ex){
       ex.printStackTrace();
     }
 
-    return true;
+    return false;
   }
 }

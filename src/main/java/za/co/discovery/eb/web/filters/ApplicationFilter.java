@@ -39,10 +39,9 @@ public class ApplicationFilter implements Filter {
     String path = ((HttpServletRequest) req).getRequestURI();
     String sessionId = copyCookies(req, resp, path);
 
-    LOGGER.info("SESSION ID: {}", sessionId);
     boolean sessionValid = sessionValidityChecker.isSessionValid(sessionId);
 
-    if (!sessionValid) {
+    if (sessionId!=null && !sessionValid) {
       RequestDispatcher rd = req.getRequestDispatcher("https://newtestwww.discsrv.co.za/portal/individual/login");
       rd.forward(req, resp);
     }
