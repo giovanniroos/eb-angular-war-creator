@@ -41,7 +41,7 @@ public class ApplicationFilter implements Filter {
 
     boolean sessionValid = sessionValidityChecker.isSessionValid(sessionId);
 
-    if (sessionId != null && !sessionId.isEmpty() && !sessionValid) {
+    if ((sessionId != null && !sessionId.isEmpty()) && !sessionValid) {
       RequestDispatcher rd = req.getRequestDispatcher("https://newtestwww.discsrv.co.za/portal/individual/login");
       rd.forward(req, resp);
     }
