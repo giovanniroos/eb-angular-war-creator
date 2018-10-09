@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
 public class ApplicationFilter implements Filter {
   private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationFilter.class);
 
+  SessionValidityChecker sessionValidityChecker = new SessionValidityChecker();
+
   public void init(FilterConfig arg0) throws ServletException {
 
   }
@@ -35,18 +37,27 @@ public class ApplicationFilter implements Filter {
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
-    showCookies(req, resp, path);
-    if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
-        .contains(".svg")) {
-      chain.doFilter(req, resp);
-    }
-    else {
-      RequestDispatcher rd = req.getRequestDispatcher("/index.html");
+    String sessionId = copyCookies(req, resp, path);
+
+    boolean sessionValid = sessionValidityChecker.isSessionValid(sessionId);
+
+    if(!sessionValid){
+      RequestDispatcher rd = req.getRequestDispatcher("https://newtestwww.discsrv.co.za/portal/");
       rd.forward(req, resp);
+    }else {
+      if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
+          .contains(".svg")) {
+        chain.doFilter(req, resp);
+      }
+      else {
+        RequestDispatcher rd = req.getRequestDispatcher("/index.html");
+        rd.forward(req, resp);
+      }
     }
   }
 
-  private void showCookies(ServletRequest req, ServletResponse resp, String path) {
+  private String copyCookies(ServletRequest req, ServletResponse resp, String path) {
+    String sessionId = "";
     try {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
@@ -67,9 +78,11 @@ public class ApplicationFilter implements Filter {
       else {
         addNew(resp, original.getValue(), path);
       }
+      sessionId = (original != null) ? original.getValue() : "";
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+    return sessionId;
   }
 
   private void addNew(ServletResponse resp, String value, String path) {
