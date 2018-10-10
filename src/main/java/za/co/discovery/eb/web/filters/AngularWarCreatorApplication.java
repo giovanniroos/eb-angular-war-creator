@@ -1,8 +1,6 @@
 package za.co.discovery.eb.web.filters;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /*
  * Copyright (c) Discovery Holdings Ltd. All Rights Reserved.
@@ -14,11 +12,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  *
  */
 @SpringBootApplication
-public class AngularWarCreatorApplication  extends SpringBootServletInitializer {
+public class AngularWarCreatorApplication {
 
-  @Override
-  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-    System.setProperty("spring.profiles.active", System.getProperty("environment"));
-    return application.sources(AngularWarCreatorApplication.class);
-  }
 }
