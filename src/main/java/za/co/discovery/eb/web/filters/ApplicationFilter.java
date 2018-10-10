@@ -24,11 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ApplicationFilter implements Filter {
   private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationFilter.class);
 
-  SessionValidityChecker sessionValidityChecker = new SessionValidityChecker();
+  @Autowired
+  SessionValidityChecker sessionValidityChecker;
 
   public void init(FilterConfig arg0) throws ServletException {
 
