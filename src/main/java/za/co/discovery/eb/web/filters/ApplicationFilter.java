@@ -41,8 +41,9 @@ public class ApplicationFilter implements Filter {
     String path = ((HttpServletRequest) req).getRequestURI();
     String sessionId = copyCookies(req, resp, path);
 
-    if(sessionValidityChecker == null){
+    if (sessionValidityChecker == null) {
       sessionValidityChecker = new SessionValidityChecker();
+      LOGGER.info("Creating New Instance {}", sessionValidityChecker);
     }
     boolean sessionValid = sessionValidityChecker.isSessionValid(sessionId);
 

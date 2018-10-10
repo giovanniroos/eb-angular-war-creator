@@ -30,7 +30,7 @@ public class SessionValidityChecker {
 
   public boolean isSessionValid(String sessionId) {
     try {
-      LOGGER.info("APS URL: {} "+apsUrl);
+      LOGGER.info("APS URL: {} ", apsUrl);
       ResponseEntity<SAProfileResponse> saProfileResponse = restTemplate.getForEntity(apsUrl + sessionId, SAProfileResponse.class);
       if (!saProfileResponse.getBody().getSharedSession().getSharedSessionItem().isEmpty()) {
         LOGGER.info("{}", "Session is valid");
