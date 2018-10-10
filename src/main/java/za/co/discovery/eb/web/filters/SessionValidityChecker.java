@@ -34,6 +34,6 @@ public class SessionValidityChecker {
       ex.printStackTrace();
     }
 
-    return false;
+    return true;
   }
 }
