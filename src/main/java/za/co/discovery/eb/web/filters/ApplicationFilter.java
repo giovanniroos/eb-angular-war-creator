@@ -24,9 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ApplicationFilter implements Filter {
   private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationFilter.class);
+
+  @Autowired
+  SessionValidityChecker sessionValidityChecker;
 
   public void init(FilterConfig arg0) throws ServletException {
 
@@ -35,29 +39,39 @@ public class ApplicationFilter implements Filter {
   public void doFilter(ServletRequest req, ServletResponse resp,
                        FilterChain chain) throws IOException, ServletException {
     String path = ((HttpServletRequest) req).getRequestURI();
-    LOGGER.info(String.format("URI Path: %s", path));
-    showCookies(req, resp, path);
-    if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
-        .contains(".svg")) {
-      chain.doFilter(req, resp);
+    String sessionId = copyCookies(req, resp, path);
+
+    if (sessionValidityChecker == null) {
+      sessionValidityChecker = new SessionValidityChecker();
+      LOGGER.info("Creating New Instance {}", sessionValidityChecker);
+    }
+    boolean sessionValid = sessionValidityChecker.isSessionValid(sessionId);
+
+    if ((sessionId != null && !sessionId.isEmpty()) && !sessionValid) {
+      RequestDispatcher rd = req.getRequestDispatcher("https://newtestwww.discsrv.co.za/portal/individual/login");
+      rd.forward(req, resp);
     }
     else {
-      LOGGER.info(String.format("Redirect to index.html"));
-      RequestDispatcher rd = req.getRequestDispatcher("/index.html");
-      rd.forward(req, resp);
+      if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
+          .contains(".svg")) {
+        chain.doFilter(req, resp);
+      }
+      else {
+        RequestDispatcher rd = req.getRequestDispatcher("/index.html");
+        rd.forward(req, resp);
+      }
     }
   }
 
-  private void showCookies(ServletRequest req, ServletResponse resp, String path) {
+  private String copyCookies(ServletRequest req, ServletResponse resp, String path) {
+    String sessionId = "";
     try {
       HttpServletRequest request = (HttpServletRequest) req;
       Cookie[] cookies = request.getCookies();
       Cookie original = findCookie(cookies, "PORTALWLJSESSIONID");
       Cookie ebSessionCookie = findCookie(cookies, "EBSESSIONID");
 
-      LOGGER.info("MAX AGE: " + Integer.toString((original != null) ? original.getMaxAge() : 0));
       if (ebSessionCookie != null) {
-        LOGGER.info(String.format("Refresh: original {%s} ebsession{%s}", original.getValue(), ebSessionCookie.getValue()));
         for (Cookie old : cookies) {
           if (old.getName().equalsIgnoreCase("EBSESSIONID")) {
             old.setMaxAge(0);
@@ -69,12 +83,13 @@ public class ApplicationFilter implements Filter {
         addNew(resp, original.getValue(), path);
       }
       else {
-        LOGGER.info(String.format("Add new: original {%s} ", original.getValue()));
         addNew(resp, original.getValue(), path);
       }
+      sessionId = (original != null) ? original.getValue() : "";
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+    return sessionId;
   }
 
   private void addNew(ServletResponse resp, String value, String path) {
