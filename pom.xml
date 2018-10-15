@@ -5,7 +5,7 @@
 
   <groupId>za.co.discovery.eb.web</groupId>
   <artifactId>${artifact.name}</artifactId>
-  <version>${artifact.varsion}</version>
+  <version>${artifact.version}</version>
   <packaging>war</packaging>
 
   <name>EB Angular War Creator</name>
