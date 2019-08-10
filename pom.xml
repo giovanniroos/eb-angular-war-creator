@@ -17,13 +17,6 @@
     <version>2.0.1.RELEASE</version>
   </parent>
 
-  <scm>
-    <connection>scm:git:http://bitbucket.discsrv.co.za/scm/debs/eb-angular-war-creator.git</connection>
-    <developerConnection>scm:git:http://bitbucket.discsrv.co.za/scm/debs/eb-angular-war-creator.git
-    </developerConnection>
-    <url>http://bitbucket.discsrv.co.za/projects/DEBS/repos/eb-angular-war-creator/</url>
-  </scm>
-
   <properties>
     <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     <environment>1.6</environment>
@@ -150,7 +143,7 @@
     </profile>
   </profiles>
 
-  <distributionManagement>
+  <!--distributionManagement>
     <repository>
       <id>Releases</id>
       <name>Group Risk Internal Releases</name>
@@ -161,5 +154,5 @@
       <name>Group Risk Internal Snapshots</name>
       <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
-  </distributionManagement>
+  </distributionManagement-->
 </project>

@@ -1,0 +1,1 @@
+ng build --aot --build-optimizer --output-hashing all -app=eb-web-employer-zone --preserve-symlinks --base-href "/eb-web-employer-zone/"
