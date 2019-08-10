@@ -16,4 +16,13 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <filter>
+    <filter-name>cacheControlFilter</filter-name>
+    <filter-class>za.co.discovery.eb.web.filters.CacheControlFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>cacheControlFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

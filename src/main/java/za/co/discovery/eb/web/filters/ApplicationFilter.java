@@ -25,12 +25,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import za.co.discovery.eb.web.SessionValidityChecker;
 
+@Component
 public class ApplicationFilter implements Filter {
   private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationFilter.class);
 
   @Autowired
   SessionValidityChecker sessionValidityChecker;
+
+  @Value("${login.url}")
+  private String loginUrl;
 
   public void init(FilterConfig arg0) throws ServletException {
 
@@ -41,15 +48,14 @@ public class ApplicationFilter implements Filter {
     String path = ((HttpServletRequest) req).getRequestURI();
     String sessionId = copyCookies(req, resp, path);
 
-    if (sessionValidityChecker == null) {
-      sessionValidityChecker = new SessionValidityChecker();
-      LOGGER.info("Creating New Instance {}", sessionValidityChecker);
-    }
-    boolean sessionValid = sessionValidityChecker.isSessionValid(sessionId);
+    LOGGER.info("Checker...{} Session...{} ", sessionValidityChecker, sessionId);
+    boolean sessionValid = true; //sessionValidityChecker.isSessionValid(sessionId);
+
+    LOGGER.info("Session Valid... {} ", sessionValid);
 
     if ((sessionId != null && !sessionId.isEmpty()) && !sessionValid) {
-      RequestDispatcher rd = req.getRequestDispatcher("https://newtestwww.discsrv.co.za/portal/individual/login");
-      rd.forward(req, resp);
+      LOGGER.info("Redirecting to login");
+      ((HttpServletResponse) resp).sendRedirect(loginUrl);
     }
     else {
       if (path.contains("/assets") || path.contains(".js") || path.contains(".css") || path.contains(".png") || path
@@ -57,7 +63,8 @@ public class ApplicationFilter implements Filter {
         chain.doFilter(req, resp);
       }
       else {
-        RequestDispatcher rd = req.getRequestDispatcher("/index.html");
+        String page = (sessionValid) ? "index.html" : "session-expired.html";
+        RequestDispatcher rd = req.getRequestDispatcher("/" + page);
         rd.forward(req, resp);
       }
     }
@@ -83,7 +90,9 @@ public class ApplicationFilter implements Filter {
         addNew(resp, original.getValue(), path);
       }
       else {
-        addNew(resp, original.getValue(), path);
+        if (original != null) {
+          addNew(resp, original.getValue(), path);
+        }
       }
       sessionId = (original != null) ? original.getValue() : "";
     } catch (Exception ex) {
@@ -97,6 +106,9 @@ public class ApplicationFilter implements Filter {
     if (path.contains("eb-web-broker-zone")) {
       myCookie.setPath("/eb-web-broker-zone");
     }
+    else if (path.contains("eb-web-member-zone")) {
+      myCookie.setPath("/eb-web-member-zone");
+    }
     else {
       myCookie.setPath("/eb-web-employer-zone/employer-onboarding");
     }
@@ -104,9 +116,11 @@ public class ApplicationFilter implements Filter {
   }
 
   private Cookie findCookie(Cookie[] cookies, String cookieName) {
-    for (Cookie ck : cookies) {
-      if (ck.getName().equalsIgnoreCase(cookieName)) {
-        return ck;
+    if (cookies != null) {
+      for (Cookie ck : cookies) {
+        if (ck.getName().equalsIgnoreCase(cookieName)) {
+          return ck;
+        }
       }
     }
     return null;

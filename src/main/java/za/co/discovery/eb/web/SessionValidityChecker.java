@@ -1,4 +1,4 @@
-package za.co.discovery.eb.web.filters;
+package za.co.discovery.eb.web;
 
 /*
  * Copyright (c) Discovery Holdings Ltd. All Rights Reserved.
@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import za.co.discovery.eb.domain.aps.SAProfileResponse;
+import za.co.discovery.eb.web.filters.ApplicationFilter;
 
 @Component
 public class SessionValidityChecker {
@@ -30,8 +31,9 @@ public class SessionValidityChecker {
 
   public boolean isSessionValid(String sessionId) {
     try {
-      LOGGER.info("APS URL: {} ", apsUrl);
-      ResponseEntity<SAProfileResponse> saProfileResponse = restTemplate.getForEntity(apsUrl + sessionId, SAProfileResponse.class);
+      String url = apsUrl+sessionId;
+      LOGGER.info("APS URL: {} ", url);
+      ResponseEntity<SAProfileResponse> saProfileResponse = restTemplate.getForEntity(url, SAProfileResponse.class);
       if (!saProfileResponse.getBody().getSharedSession().getSharedSessionItem().isEmpty()) {
         LOGGER.info("{}", "Session is valid");
         return true;
@@ -40,6 +42,6 @@ public class SessionValidityChecker {
       ex.printStackTrace();
     }
 
-    return true;
+    return false;
   }
 }

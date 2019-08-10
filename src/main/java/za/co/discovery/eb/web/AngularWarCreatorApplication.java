@@ -1,5 +1,6 @@
-package za.co.discovery.eb.web.filters;
+package za.co.discovery.eb.web;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /*
@@ -13,5 +14,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class AngularWarCreatorApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(AngularWarCreatorApplication.class, args);
+  }
+
 
 }

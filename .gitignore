@@ -25,3 +25,5 @@ nbdist/
 
 ### Maven ###
 release.properties
+
+src/main/webapp/index.html
